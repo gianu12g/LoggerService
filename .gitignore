@@ -1,0 +1,12 @@
+# Project place file
+/LoggerServicePackage.rbxlx
+
+# Roblox Studio lock files
+/*.rbxlx.lock
+/*.rbxl.lock
+
+sourcemap.json
+
+rokit.toml
+
+wally.lock
