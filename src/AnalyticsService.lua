@@ -40,6 +40,30 @@ function AnalyticsService.new(config: AnalyticsConfig)
 	return self
 end
 
+local function _authHeaderValue(apiKey)
+	if apiKey == nil then
+		return nil
+	end
+
+	local t = typeof(apiKey)
+
+	-- ✅ Secret support
+	if t == "Secret" then
+		return apiKey:AddPrefix("ApiKey ")
+	end
+
+	-- ✅ Keep current string support
+	if type(apiKey) == "string" then
+		-- keep existing behavior if caller already included prefix
+		if apiKey:match("^%s*ApiKey%s+") or apiKey:match("^%s*Bearer%s+") then
+			return apiKey
+		end
+		return "ApiKey " .. apiKey
+	end
+
+	error(("[elasticsearchservice] apiKey must be string or Secret, got %s"):format(t))
+end
+
 function AnalyticsService:Init()
 	if self._isRunning then
 		warn("[AnalyticsService] Already initialized")
@@ -74,7 +98,7 @@ function AnalyticsService:_testConnection()
 			Url = self._elasticsearchUrl .. "/_cluster/health",
 			Method = "GET",
 			Headers = {
-				["Authorization"] = "ApiKey " .. self._apiKey,
+				["Authorization"] = _authHeaderValue(self._apiKey),
 			},
 		})
 	end)
@@ -142,7 +166,7 @@ function AnalyticsService:_sendEvent(document: { [string]: any }): boolean
 			Method = "POST",
 			Headers = {
 				["Content-Type"] = "application/x-ndjson",
-				["Authorization"] = "ApiKey " .. self._apiKey,
+				["Authorization"] = _authHeaderValue(self._apiKey),
 			},
 			Body = body,
 		})

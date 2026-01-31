@@ -1,10 +1,10 @@
 [package]
 name = "gianu12g/elasticsearchservice"
-version = "1.0.5"
+version = "1.0.6"
 registry = "https://github.com/UpliftGames/wally-index"
 realm = "server"
 license = "MIT"
-description = "A lightweight analytics service for Roblox with Elasticsearch integration"
+description = "I created this for a personal project that connects to Elasticsearch and Kibana, won't work by just importing."
 authors = ["Bushinka Studios <gianu12g@gmail.com>"]
 include = ["default.project.json", "src", "src/**"]
 exclude = ["rokit.toml"]
